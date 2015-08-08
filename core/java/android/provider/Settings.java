@@ -5101,6 +5101,12 @@ public final class Settings {
         private static final Validator VOLUME_ANSWER_CALL_VALIDATOR =
                 BOOLEAN_VALIDATOR;
 
+        /** @hide
+         * Three Finger Gesture from Oppo
+         * @hide
+         */
+        public static final String THREE_FINGER_GESTURE = "three_finger_gesture";
+
         /**
          * Settings to backup. This is here so that it's in the same place as the settings
          * keys and easy to update.
