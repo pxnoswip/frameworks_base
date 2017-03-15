@@ -20,9 +20,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Resources;
+import android.content.ContentResolver;
 import android.database.ContentObserver;
 import android.net.NetworkCapabilities;
 import android.os.Handler;
+import android.os.UserHandle;
 import android.os.Looper;
 import android.provider.Settings.Global;
 import android.telephony.NetworkRegistrationInfo;
@@ -36,8 +38,10 @@ import android.telephony.SubscriptionManager;
 import android.telephony.TelephonyManager;
 import android.text.Html;
 import android.text.TextUtils;
+import android.net.Uri;
 import android.util.Log;
 import android.util.SparseArray;
+import android.provider.Settings;
 
 import com.android.ims.ImsException;
 import com.android.ims.ImsManager;
@@ -88,7 +92,7 @@ public class MobileSignalController extends SignalController<
     boolean mInflateSignalStrengths = false;
     // Some specific carriers have 5GE network which is special LTE CA network.
     private static final int NETWORK_TYPE_LTE_CA_5GE = TelephonyManager.MAX_NETWORK_TYPE + 1;
-
+    private boolean mRoamingIconAllowed;
     private ImsManager mImsManager;
     private ImsManager.Connector mImsManagerConnector;
 
@@ -123,6 +127,10 @@ public class MobileSignalController extends SignalController<
         // Get initial data sim state.
         updateDataSim();
 
+        Handler mHandler = new Handler();
+        SettingsObserver settingsObserver = new SettingsObserver(mHandler);
+        settingsObserver.observe();
+
         int phoneId = mSubscriptionInfo.getSimSlotIndex();
         mImsManagerConnector = new ImsManager.Connector(mContext, phoneId,
                 new ImsManager.Connector.Listener() {
@@ -146,6 +154,36 @@ public class MobileSignalController extends SignalController<
                 updateTelephony();
             }
         };
+    }
+
+    class SettingsObserver extends ContentObserver {
+        SettingsObserver(Handler handler) {
+            super(handler);
+        }
+
+        void observe() {
+            ContentResolver resolver = mContext.getContentResolver();
+            resolver.registerContentObserver(
+                    Settings.System.getUriFor(Settings.System.ROAMING_INDICATOR_ICON), false,
+                    this, UserHandle.USER_ALL);
+            updateSettings();
+        }
+
+        /*
+         *  @hide
+         */
+        @Override
+        public void onChange(boolean selfChange) {
+            updateSettings();
+        }
+    }
+
+    private void updateSettings() {
+        ContentResolver resolver = mContext.getContentResolver();
+
+        mRoamingIconAllowed = Settings.System.getIntForUser(resolver,
+                Settings.System.ROAMING_INDICATOR_ICON, 1,
+                UserHandle.USER_CURRENT) == 1;
     }
 
     private void setListeners() {
@@ -584,7 +622,7 @@ public class MobileSignalController extends SignalController<
         mCurrentState.dataConnected = mCurrentState.connected
                 && mDataState == TelephonyManager.DATA_CONNECTED;
 
-        mCurrentState.roaming = isRoaming();
+        mCurrentState.roaming = isRoaming() && mRoamingIconAllowed;;
         if (isCarrierNetworkChangeActive()) {
             mCurrentState.iconGroup = TelephonyIcons.CARRIER_NETWORK_CHANGE;
         } else if (isDataDisabled() && !mConfig.alwaysShowDataRatIcon) {
