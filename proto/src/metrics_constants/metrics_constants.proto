@@ -7433,5 +7433,8 @@ message MetricsEvent {
     // CustomSettings constant
     CUSTOM_SETTINGS = 1999;
 
+    // NitrogenSettings constant
+    NITROGEN_SETTINGS = 2000;
+
   }
 }
