@@ -735,6 +735,9 @@ public class StatusBar extends SystemUI implements DemoMode,
         mNosSettingsObserver.observe();
         mNosSettingsObserver.update();
 
+        mNosSettingsObserver.observe();
+        mNosSettingsObserver.update();
+
         // Make sure we always have the most current wallpaper info.
         IntentFilter wallpaperChangedFilter = new IntentFilter(Intent.ACTION_WALLPAPER_CHANGED);
         mContext.registerReceiverAsUser(mWallpaperChangedReceiver, UserHandle.ALL,
@@ -3830,6 +3833,10 @@ public class StatusBar extends SystemUI implements DemoMode,
             resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.DISPLAY_CUTOUT_HIDDEN),
                     false, this, UserHandle.USER_ALL);
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.HEADS_UP_STOPLIST_VALUES), false, this);
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.HEADS_UP_BLACKLIST_VALUES), false, this);
         }
          @Override
         public void onChange(boolean selfChange, Uri uri) {
@@ -3842,7 +3849,19 @@ public class StatusBar extends SystemUI implements DemoMode,
 
          public void update() {
             updateCutoutOverlay();
+            setHeadsUpStoplist();
+            setHeadsUpBlacklist();
         }
+    }
+
+    private void setHeadsUpStoplist() {
+        if (mPresenter != null)
+            mPresenter.setHeadsUpStoplist();
+    }
+
+    private void setHeadsUpBlacklist() {
+        if (mPresenter != null)
+            mPresenter.setHeadsUpBlacklist();
     }
 
     public int getWakefulnessState() {
