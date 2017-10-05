@@ -5116,6 +5116,50 @@ public final class Settings {
          */
         public static final String THREE_FINGER_GESTURE = "three_finger_gesture";
 
+       /**
+         * @hide
+         */
+        public static final String OMNI_NETWORK_TRAFFIC_ENABLE = "network_traffic_enable";
+
+        /** @hide */
+        private static final Validator OMNI_NETWORK_TRAFFIC_ENABLE_VALIDATOR =
+                BOOLEAN_VALIDATOR;
+
+        /**
+         * Network traffic indicator, goes from least to greatest significant bitwise
+         * 0 = Display up-stream traffic if set
+         * 1 = Display down-stream traffic if set
+         * 2 = Show as Byte/s if set
+         * 16-31 = Refresh interval(ms) min: 250 max: 32750 default: 1000
+         * @hide
+         */
+        public static final String OMNI_NETWORK_TRAFFIC_STATE = "network_traffic_state";
+
+        /** @hide */
+        private static final Validator OMNI_NETWORK_TRAFFIC_STATE_VALIDATOR =
+                ANY_INTEGER_VALIDATOR;
+
+        /**
+         * Whether or not to hide the network traffic indicator when there is no activity
+         * @hide
+         */
+        public static final String OMNI_NETWORK_TRAFFIC_AUTOHIDE = "network_traffic_autohide";
+
+        /** @hide */
+        private static final Validator OMNI_NETWORK_TRAFFIC_AUTOHIDE_VALIDATOR =
+                BOOLEAN_VALIDATOR;
+
+        /**
+         * Network traffic inactivity threshold (default is 10 kBs)
+         * @hide
+         */
+        public static final String OMNI_NETWORK_TRAFFIC_AUTOHIDE_THRESHOLD =
+                "network_traffic_autohide_threshold";
+
+        /** @hide */
+        private static final Validator OMNI_NETWORK_TRAFFIC_AUTOHIDE_THRESHOLD_VALIDATOR =
+                ANY_INTEGER_VALIDATOR;
+
         /**
          * Settings to backup. This is here so that it's in the same place as the settings
          * keys and easy to update.
@@ -5227,6 +5271,10 @@ public final class Settings {
             DOUBLE_TAP_SLEEP_GESTURE,
             DOUBLE_TAP_SLEEP_LOCKSCREEN,
             VOLUME_ANSWER_CALL,
+            OMNI_NETWORK_TRAFFIC_ENABLE,
+            OMNI_NETWORK_TRAFFIC_STATE,
+            OMNI_NETWORK_TRAFFIC_AUTOHIDE,
+            OMNI_NETWORK_TRAFFIC_AUTOHIDE_THRESHOLD,
         };
 
          /**
@@ -5408,6 +5456,10 @@ public final class Settings {
             PRIVATE_SETTINGS.add(DOUBLE_TAP_SLEEP_GESTURE);
             PRIVATE_SETTINGS.add(DOUBLE_TAP_SLEEP_LOCKSCREEN);
             PRIVATE_SETTINGS.add(VOLUME_ANSWER_CALL);
+            PRIVATE_SETTINGS.add(OMNI_NETWORK_TRAFFIC_ENABLE);
+            PRIVATE_SETTINGS.add(OMNI_NETWORK_TRAFFIC_STATE);
+            PRIVATE_SETTINGS.add(OMNI_NETWORK_TRAFFIC_AUTOHIDE);
+            PRIVATE_SETTINGS.add(OMNI_NETWORK_TRAFFIC_AUTOHIDE_THRESHOLD);
         }
 
         /**
@@ -5566,6 +5618,14 @@ public final class Settings {
             VALIDATORS.put(DOUBLE_TAP_SLEEP_LOCKSCREEN,
                     DOUBLE_TAP_SLEEP_LOCKSCREEN_VALIDATOR);
             VALIDATORS.put(VOLUME_ANSWER_CALL, VOLUME_ANSWER_CALL_VALIDATOR);
+            VALIDATORS.put(OMNI_NETWORK_TRAFFIC_ENABLE,
+                    OMNI_NETWORK_TRAFFIC_ENABLE_VALIDATOR);
+            VALIDATORS.put(OMNI_NETWORK_TRAFFIC_STATE,
+                    OMNI_NETWORK_TRAFFIC_STATE_VALIDATOR);
+            VALIDATORS.put(OMNI_NETWORK_TRAFFIC_AUTOHIDE,
+                    OMNI_NETWORK_TRAFFIC_AUTOHIDE_VALIDATOR);
+            VALIDATORS.put(OMNI_NETWORK_TRAFFIC_AUTOHIDE_THRESHOLD,
+                    OMNI_NETWORK_TRAFFIC_AUTOHIDE_THRESHOLD_VALIDATOR);
         }
 
         /**
