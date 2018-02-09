@@ -87,4 +87,8 @@
     <string name="status_bar_data_saver">Data saver</string>
     <string name="status_bar_vpn">VPN</string>
     <string name="status_bar_roaming">Roaming</string>
+
+    <!-- Sound search tile -->
+    <string name="quick_settings_sound_search">Sound search</string>
+
 </resources>
