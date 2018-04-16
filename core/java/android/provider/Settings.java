@@ -5228,6 +5228,15 @@ public final class Settings {
                 BOOLEAN_VALIDATOR;
 
         /**
+         * @hide
+         */
+        public static final String OMNI_LONG_PRESS_POWER_TORCH =
+                "long_press_power_torch";
+
+        private static final Validator OMNI_LONG_PRESS_POWER_TORCH_VALIDATOR =
+                BOOLEAN_VALIDATOR;
+
+        /**
          * media artwork wallpaper on lockscreen
          * @hide
          */
@@ -5353,6 +5362,7 @@ public final class Settings {
             OMNI_USE_OLD_MOBILETYPE,
             NAV_BAR_GESTURAL_HIDE_NAV,
             SHOW_LOCKSCREEN_MEDIA_ART,
+            OMNI_LONG_PRESS_POWER_TORCH,
         };
 
          /**
@@ -5540,6 +5550,7 @@ public final class Settings {
             PRIVATE_SETTINGS.add(OMNI_USE_OLD_MOBILETYPE);
             PRIVATE_SETTINGS.add(NAV_BAR_GESTURAL_HIDE_NAV);
             PRIVATE_SETTINGS.add(SHOW_LOCKSCREEN_MEDIA_ART);
+            PRIVATE_SETTINGS.add(OMNI_LONG_PRESS_POWER_TORCH);
         }
 
         /**
@@ -5708,6 +5719,7 @@ public final class Settings {
             VALIDATORS.put(OMNI_USE_OLD_MOBILETYPE, OMNI_USE_OLD_MOBILETYPE_VALIDATOR);
             VALIDATORS.put(NAV_BAR_GESTURAL_HIDE_NAV, NAV_BAR_GESTURAL_HIDE_NAV_VALIDATOR);
             VALIDATORS.put(SHOW_LOCKSCREEN_MEDIA_ART, SHOW_LOCKSCREEN_MEDIA_ART_VALIDATOR);
+            VALIDATORS.put(OMNI_LONG_PRESS_POWER_TORCH, OMNI_LONG_PRESS_POWER_TORCH_VALIDATOR);
         }
 
         /**
