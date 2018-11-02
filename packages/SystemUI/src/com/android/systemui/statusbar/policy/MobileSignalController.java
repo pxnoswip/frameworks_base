@@ -28,9 +28,10 @@ import android.os.UserHandle;
 import android.os.Looper;
 import android.os.Message;
 import android.provider.Settings.Global;
-import android.telephony.NetworkRegistrationInfo;
+import android.telephony.ims.ImsMmTelManager;
 import android.telephony.ims.ImsReasonInfo;
 import android.telephony.ims.stub.ImsRegistrationImplBase;
+import android.telephony.NetworkRegistrationInfo;
 import android.telephony.PhoneStateListener;
 import android.telephony.ServiceState;
 import android.telephony.SignalStrength;
@@ -256,11 +257,7 @@ public class MobileSignalController extends SignalController<
     public void unregisterListener() {
         mPhone.listen(mPhoneStateListener, 0);
         mContext.getContentResolver().unregisterContentObserver(mObserver);
-        try {
-            mImsManager.removeRegistrationListener(mImsRegistrationCallback);
-        }catch(ImsException e){
-            Log.d(mTag, "exception:" + e);
-        }
+        mImsManager.removeRegistrationListener(mImsRegistrationCallback);
         mContext.unregisterReceiver(mVolteSwitchObserver);
     }
 
@@ -843,8 +840,8 @@ public class MobileSignalController extends SignalController<
         }
     };
 
-    private final ImsRegistrationImplBase.Callback mImsRegistrationCallback =
-            new ImsRegistrationImplBase.Callback() {
+    private final ImsMmTelManager.RegistrationCallback mImsRegistrationCallback =
+            new ImsMmTelManager.RegistrationCallback() {
                 @Override
                 public void onRegistered(
                         @ImsRegistrationImplBase.ImsRegistrationTech int imsRadioTech) {
