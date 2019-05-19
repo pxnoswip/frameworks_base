@@ -115,4 +115,5 @@ interface IStatusBarService
     void hideInDisplayFingerprintView();
 
     void toggleCameraFlash();
+    void toggleCameraFlashState(boolean enable);
 }
