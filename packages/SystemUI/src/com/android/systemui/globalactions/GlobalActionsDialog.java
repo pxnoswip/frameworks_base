@@ -48,6 +48,7 @@ import android.os.IBinder;
 import android.os.Message;
 import android.os.Messenger;
 import android.os.PowerManager;
+import android.os.Process;
 import android.os.RemoteException;
 import android.os.ServiceManager;
 import android.os.SystemProperties;
@@ -143,6 +144,7 @@ public class GlobalActionsDialog implements DialogInterface.OnDismissListener,
     private static final String GLOBAL_ACTION_KEY_SCREENSHOT = "screenshot";
     private static final String GLOBAL_ACTION_KEY_RESTART_RECOVERY = "recovery";
     private static final String GLOBAL_ACTION_KEY_TORCH = "torch";
+    private static final String GLOBAL_ACTION_KEY_RESTART_SYSTEMUI = "systemui";
 
     private final Context mContext;
     private final GlobalActionsManager mWindowManagerFuncs;
@@ -428,6 +430,8 @@ public class GlobalActionsDialog implements DialogInterface.OnDismissListener,
                         Settings.System.POWERMENU_RESTART_RECOVERY, 1) == 1) {
                     mItems.add(new AdvancedRestartAction());
                 }
+            } else if (GLOBAL_ACTION_KEY_RESTART_SYSTEMUI.equals(actionKey)) {
+                mItems.add(new RestartUIAction());
             } else {
                 Log.e(TAG, "Invalid global action key " + actionKey);
             }
@@ -732,6 +736,33 @@ public class GlobalActionsDialog implements DialogInterface.OnDismissListener,
             }
         };
     }
+
+  private class RestartUIAction extends SinglePressAction {
+        RestartUIAction () {
+              super(com.android.systemui.R.drawable.ic_restart_ui,
+                com.android.systemui.R.string.global_action_restart_ui);
+         }
+
+           @Override
+           public void onPress() {
+                mWindowManagerFuncs.onGlobalActionsHidden();
+                restartSystemUI();
+              }
+
+        public void restartSystemUI() {
+           Process.killProcess(Process.myPid());
+            }
+
+            @Override
+            public boolean showDuringKeyguard() {
+                return true;
+            }
+
+            @Override
+            public boolean showBeforeProvisioning() {
+                return true;
+            }
+       }
 
     private class BugReportAction extends SinglePressAction implements LongPressAction {
 
