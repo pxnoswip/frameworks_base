@@ -23,6 +23,7 @@ import android.content.res.Configuration;
 import android.content.ContentResolver;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -31,11 +32,14 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.PixelFormat;
 import android.graphics.Point;
+import android.net.Uri;
 import android.os.Handler;
 import android.os.UserHandle;
 import android.os.Looper;
 import android.os.PowerManager;
 import android.os.RemoteException;
+import android.os.ParcelFileDescriptor;
+import android.os.UserHandle;
 import android.provider.Settings;
 import android.view.Display;
 import android.view.Gravity;
@@ -44,6 +48,7 @@ import android.view.MotionEvent;
 import android.view.Surface;
 import android.view.View;
 import android.view.WindowManager;
+import android.text.TextUtils;
 import android.widget.ImageView;
 import androidx.palette.graphics.Palette;
 
@@ -54,6 +59,7 @@ import com.android.systemui.R;
 import vendor.omni.biometrics.fingerprint.inscreen.V1_0.IFingerprintInscreen;
 import vendor.omni.biometrics.fingerprint.inscreen.V1_0.IFingerprintInscreenCallback;
 
+import java.io.FileDescriptor;
 import java.util.NoSuchElementException;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -101,6 +107,11 @@ public class FODCircleView extends ImageView {
         @Override
         public void onFingerUp() {
             mHandler.post(() -> hideCircle());
+            mHandler.post(() -> {
+                setCustomIcon();
+
+                invalidate();
+            });
         }
     };
 
@@ -168,6 +179,7 @@ public class FODCircleView extends ImageView {
         mPaintFingerprint.setAntiAlias(true);
         mPaintFingerprint.setColor(res.getColor(R.color.config_fodColor));
 
+        setCustomIcon();
         mWindowManager = context.getSystemService(WindowManager.class);
 
         mNavigationBarSize = res.getDimensionPixelSize(R.dimen.navigation_bar_size);
@@ -189,7 +201,7 @@ public class FODCircleView extends ImageView {
         mParams.gravity = Gravity.TOP | Gravity.LEFT;
 
         mWindowManager.addView(this, mParams);
-
+        setCustomIcon();
         updatePosition();
         hide();
 
@@ -239,6 +251,7 @@ public class FODCircleView extends ImageView {
         } else if (event.getAction() == MotionEvent.ACTION_UP) {
             hideCircle();
             mFODAnimation.hideFODanimation();
+            setCustomIcon();
             return true;
         } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
             return true;
@@ -313,6 +326,7 @@ public class FODCircleView extends ImageView {
         if (mIsDreaming) mWakeLock.acquire(500);
         setDim(true);
         updateAlpha();
+        setCustomIcon();
 
         setImageDrawable(null);
         invalidate();
@@ -521,6 +535,28 @@ public class FODCircleView extends ImageView {
         }
 
         mWindowManager.updateViewLayout(this, mParams);
+    }
+
+    private void setCustomIcon(){
+        final String customIconURI = Settings.System.getStringForUser(getContext().getContentResolver(),
+                Settings.System.OMNI_CUSTOM_FP_ICON,
+                UserHandle.USER_CURRENT);
+
+        if (!TextUtils.isEmpty(customIconURI)) {
+            try {
+                ParcelFileDescriptor parcelFileDescriptor =
+                    getContext().getContentResolver().openFileDescriptor(Uri.parse(customIconURI), "r");
+                FileDescriptor fileDescriptor = parcelFileDescriptor.getFileDescriptor();
+                Bitmap image = BitmapFactory.decodeFileDescriptor(fileDescriptor);
+                parcelFileDescriptor.close();
+                setImageBitmap(image);
+            }
+            catch (Exception e) {
+                setImageResource(R.drawable.fod_icon_default);
+            }
+        } else {
+            setImageResource(R.drawable.fod_icon_default);
+        }
     }
 
     private class BurnInProtectionTask extends TimerTask {
