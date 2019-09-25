@@ -4932,6 +4932,13 @@ public final class Settings {
         private static final Validator HEADS_UP_BLACKLIST_VALUES_VALIDATOR =
                 ANY_STRING_VALIDATOR;
 
+        /** @hide */
+        public static final String BACK_GESTURE_HEIGHT = "back_gesture_height";
+
+        /** @hide */
+        private static final Validator BACK_GESTURE_HEIGHT_VALIDATOR =
+                ANY_INTEGER_VALIDATOR;
+
         /**
          * whether to enable or disable vibration on succesful fingerprint auth
          *
@@ -5306,6 +5313,7 @@ public final class Settings {
             OMNI_NETWORK_TRAFFIC_STATE,
             OMNI_NETWORK_TRAFFIC_AUTOHIDE,
             OMNI_NETWORK_TRAFFIC_AUTOHIDE_THRESHOLD,
+            BACK_GESTURE_HEIGHT,
         };
 
          /**
@@ -5492,6 +5500,7 @@ public final class Settings {
             PRIVATE_SETTINGS.add(OMNI_NETWORK_TRAFFIC_STATE);
             PRIVATE_SETTINGS.add(OMNI_NETWORK_TRAFFIC_AUTOHIDE);
             PRIVATE_SETTINGS.add(OMNI_NETWORK_TRAFFIC_AUTOHIDE_THRESHOLD);
+            PRIVATE_SETTINGS.add(BACK_GESTURE_HEIGHT);
         }
 
         /**
@@ -5659,6 +5668,7 @@ public final class Settings {
                     OMNI_NETWORK_TRAFFIC_AUTOHIDE_VALIDATOR);
             VALIDATORS.put(OMNI_NETWORK_TRAFFIC_AUTOHIDE_THRESHOLD,
                     OMNI_NETWORK_TRAFFIC_AUTOHIDE_THRESHOLD_VALIDATOR);
+            VALIDATORS.put(BACK_GESTURE_HEIGHT, BACK_GESTURE_HEIGHT_VALIDATOR);
         }
 
         /**
