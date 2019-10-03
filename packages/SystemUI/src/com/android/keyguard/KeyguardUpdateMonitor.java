@@ -2716,4 +2716,15 @@ public class KeyguardUpdateMonitor implements TrustManager.TrustListener {
         }
         return mPulsing;
     }
+
+    public boolean setPulsing(boolean pulsing) {
+        mPulsing = pulsing;
+        for (int i = 0; i < mCallbacks.size(); i++) {
+            KeyguardUpdateMonitorCallback cb = mCallbacks.get(i).get();
+            if (cb != null) {
+                cb.onPulsing(mPulsing);
+            }
+        }
+        return mPulsing;
+    }
 }
