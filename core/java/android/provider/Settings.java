@@ -5227,6 +5227,15 @@ public final class Settings {
         public static final String QS_SHOW_BRIGHTNESS_ICON = "qs_show_brightness_icon";
 
         /**
+         * @hide
+         */
+        public static final String NAV_BAR_GESTURAL_HIDE_NAV = "nav_bar_gestural_hide_nav";
+
+        /** @hide */
+        private static final Validator NAV_BAR_GESTURAL_HIDE_NAV_VALIDATOR =
+                BOOLEAN_VALIDATOR;
+
+        /**
          * Settings to backup. This is here so that it's in the same place as the settings
          * keys and easy to update.
          *
@@ -5342,6 +5351,7 @@ public final class Settings {
             OMNI_NETWORK_TRAFFIC_AUTOHIDE_THRESHOLD,
             BACK_GESTURE_HEIGHT,
             OMNI_USE_OLD_MOBILETYPE,
+            NAV_BAR_GESTURAL_HIDE_NAV,
         };
 
          /**
@@ -5528,6 +5538,7 @@ public final class Settings {
             PRIVATE_SETTINGS.add(OMNI_NETWORK_TRAFFIC_AUTOHIDE_THRESHOLD);
             PRIVATE_SETTINGS.add(BACK_GESTURE_HEIGHT);
             PRIVATE_SETTINGS.add(OMNI_USE_OLD_MOBILETYPE);
+            PRIVATE_SETTINGS.add(NAV_BAR_GESTURAL_HIDE_NAV);
         }
 
         /**
@@ -5695,6 +5706,7 @@ public final class Settings {
                     OMNI_NETWORK_TRAFFIC_AUTOHIDE_THRESHOLD_VALIDATOR);
             VALIDATORS.put(BACK_GESTURE_HEIGHT, BACK_GESTURE_HEIGHT_VALIDATOR);
             VALIDATORS.put(OMNI_USE_OLD_MOBILETYPE, OMNI_USE_OLD_MOBILETYPE_VALIDATOR);
+            VALIDATORS.put(NAV_BAR_GESTURAL_HIDE_NAV, NAV_BAR_GESTURAL_HIDE_NAV_VALIDATOR);
         }
 
         /**
