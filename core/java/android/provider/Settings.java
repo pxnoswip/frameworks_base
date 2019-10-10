@@ -4589,6 +4589,24 @@ public final class Settings {
                 ANY_STRING_VALIDATOR;
 
         /**
+          * Whether to enable Ambient edge light
+          * @hide
+          */
+         public static final String PULSE_AMBIENT_LIGHT = "pulse_ambient_light";
+
+         /** @hide */
+         private static final Validator PULSE_AMBIENT_LIGHT_VALIDATOR = BOOLEAN_VALIDATOR;
+
+         /**
+          * What color to use for Ambient edge light
+          * @hide
+          */
+         public static final String PULSE_AMBIENT_LIGHT_COLOR = "pulse_ambient_light_color";
+
+         /** @hide */
+         private static final Validator PULSE_AMBIENT_LIGHT_COLOR_VALIDATOR = ANY_STRING_VALIDATOR;
+
+        /**
          * @hide
          */
         public static final String DEVICE_FEATURE_SETTINGS = "device_feature_settings";
@@ -5398,6 +5416,8 @@ public final class Settings {
             POWERMENU_LOCKSCREEN,
             POWERMENU_TORCH,
             OMNI_CUSTOM_FP_ICON,
+            PULSE_AMBIENT_LIGHT,
+            PULSE_AMBIENT_LIGHT_COLOR,
             OMNI_QS_LAYOUT_COLUMNS_LANDSCAPE,
             OMNI_QS_LAYOUT_COLUMNS,
             OMNI_QS_TILE_TITLE_VISIBILITY,
@@ -5589,6 +5609,8 @@ public final class Settings {
             PRIVATE_SETTINGS.add(POWERMENU_LOCKSCREEN);
             PRIVATE_SETTINGS.add(POWERMENU_TORCH);
             PRIVATE_SETTINGS.add(OMNI_CUSTOM_FP_ICON);
+            PRIVATE_SETTINGS.add(PULSE_AMBIENT_LIGHT);
+            PRIVATE_SETTINGS.add(PULSE_AMBIENT_LIGHT_COLOR);
             PRIVATE_SETTINGS.add(OMNI_QS_LAYOUT_COLUMNS_LANDSCAPE);
             PRIVATE_SETTINGS.add(OMNI_QS_LAYOUT_COLUMNS);
             PRIVATE_SETTINGS.add(OMNI_QS_TILE_TITLE_VISIBILITY);
@@ -5759,6 +5781,8 @@ public final class Settings {
             VALIDATORS.put(POWERMENU_TORCH, POWERMENU_TORCH_VALIDATOR);
             VALIDATORS.put(OMNI_CUSTOM_FP_ICON,
                     OMNI_CUSTOM_FP_ICON_VALIDATOR);
+            VALIDATORS.put(PULSE_AMBIENT_LIGHT, PULSE_AMBIENT_LIGHT_VALIDATOR);
+            VALIDATORS.put(PULSE_AMBIENT_LIGHT_COLOR, PULSE_AMBIENT_LIGHT_COLOR_VALIDATOR);
             VALIDATORS.put(OMNI_QS_LAYOUT_COLUMNS_LANDSCAPE,
                     OMNI_QS_LAYOUT_COLUMNS_LANDSCAPE_VALIDATOR);
             VALIDATORS.put(OMNI_QS_LAYOUT_COLUMNS, OMNI_QS_LAYOUT_COLUMNS_VALIDATOR);
