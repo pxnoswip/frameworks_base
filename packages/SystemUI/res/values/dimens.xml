@@ -280,10 +280,10 @@
     <dimen name="status_bar_padding_top">0dp</dimen>
 
     <!-- the radius of the overflow dot in the status bar -->
-    <dimen name="overflow_dot_radius">2dp</dimen>
+    <dimen name="overflow_dot_radius">0dp</dimen>
 
     <!-- the padding between dots in the icon overflow -->
-    <dimen name="overflow_icon_dot_padding">3dp</dimen>
+    <dimen name="overflow_icon_dot_padding">0dp</dimen>
 
     <!-- The padding on the global screenshot background image -->
     <dimen name="global_screenshot_bg_padding">20dp</dimen>
