@@ -52,7 +52,7 @@ public class StatusIconContainer extends AlphaOptimizedLinearLayout {
     private static final boolean DEBUG = false;
     private static final boolean DEBUG_OVERFLOW = false;
     // Max 8 status icons including battery
-    private static final int MAX_ICONS = 7;
+    private static final int MAX_ICONS = 10;
     private static final int MAX_DOTS = 1;
 
     private int mDotPadding;
@@ -101,7 +101,7 @@ public class StatusIconContainer extends AlphaOptimizedLinearLayout {
         mDotPadding = getResources().getDimensionPixelSize(R.dimen.overflow_icon_dot_padding);
         int radius = getResources().getDimensionPixelSize(R.dimen.overflow_dot_radius);
         mStaticDotDiameter = 2 * radius;
-        mUnderflowWidth = mIconDotFrameWidth + (MAX_DOTS - 1) * (mStaticDotDiameter + mDotPadding);
+        mUnderflowWidth = (MAX_DOTS - 1) * (mStaticDotDiameter + mDotPadding);
     }
 
     @Override

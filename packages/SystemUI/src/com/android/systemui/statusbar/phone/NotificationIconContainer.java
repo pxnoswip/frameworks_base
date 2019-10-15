@@ -246,7 +246,7 @@ public class NotificationIconContainer extends AlphaOptimizedFrameLayout {
 
     private void setIconSize(int size) {
         mIconSize = size;
-        mOverflowWidth = mIconSize + (MAX_DOTS - 1) * (mStaticDotDiameter + mDotPadding);
+        mOverflowWidth = (MAX_DOTS - 1) * (mStaticDotDiameter + mDotPadding);
     }
 
     private void updateState() {
