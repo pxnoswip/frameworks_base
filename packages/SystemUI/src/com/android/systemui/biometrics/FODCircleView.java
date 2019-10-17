@@ -32,6 +32,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.PixelFormat;
 import android.graphics.Point;
+import android.hardware.display.DisplayManager;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.UserHandle;
@@ -74,6 +75,7 @@ public class FODCircleView extends ImageView {
     private final Paint mPaintFingerprint = new Paint();
     private final WindowManager.LayoutParams mParams = new WindowManager.LayoutParams();
     private final WindowManager mWindowManager;
+    private final DisplayManager mDisplayManager;
 
     private IFingerprintInscreen mFingerprintInscreenDaemon;
 
@@ -213,6 +215,7 @@ public class FODCircleView extends ImageView {
                 FODCircleView.class.getSimpleName());
 
         mFODAnimation = new FODAnimation(context, mPositionX, mPositionY);
+        mDisplayManager = context.getSystemService(DisplayManager.class);
     }
 
     @Override
@@ -525,12 +528,12 @@ public class FODCircleView extends ImageView {
             }
 
             if (mShouldBoostBrightness) {
-                mParams.screenBrightness = 1.0f;
+                mDisplayManager.setTemporaryBrightness(255);
             }
 
             mParams.dimAmount = dimAmount / 255.0f;
         } else {
-            mParams.screenBrightness = 0.0f;
+            mDisplayManager.setTemporaryBrightness(-1);
             mParams.dimAmount = 0.0f;
         }
 
