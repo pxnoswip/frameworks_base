@@ -4914,6 +4914,12 @@ public final class Settings {
         private static final Validator BACK_GESTURE_HEIGHT_VALIDATOR =
                 ANY_INTEGER_VALIDATOR;
 
+        /** Whether to pulse ambient on new music tracks
+         *
+         * @hide
+         */
+        public static final String PULSE_ON_NEW_TRACKS = "pulse_on_new_tracks";
+
         /**
          * whether to enable or disable vibration on succesful fingerprint auth
          *
