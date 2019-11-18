@@ -3897,6 +3897,9 @@ public class StatusBar extends SystemUI implements DemoMode,
             resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.PULSE_ON_NEW_TRACKS),
                     false, this, UserHandle.USER_ALL);
+            resolver.registerContentObserver(Settings.Secure.getUriFor(
+                    Settings.Secure.SHOW_BACK_ARROW_GESTURE),
+                    false, this, UserHandle.USER_ALL);
         }
          @Override
         public void onChange(boolean selfChange, Uri uri) {
@@ -3920,11 +3923,18 @@ public class StatusBar extends SystemUI implements DemoMode,
                     Settings.System.OMNI_USE_OLD_MOBILETYPE, 0,
                     UserHandle.USER_CURRENT) != 0;
             TelephonyIcons.updateIcons(USE_OLD_MOBILETYPE);
+            setHideArrowForBackGesture();
+        }
+    }
+
+    private void setHideArrowForBackGesture() {
+        if (getNavigationBarView() != null) {
+            getNavigationBarView().updateBackArrowForGesture();
         }
     }
 
     private void setHeadsUpStoplist() {
-        if (mPresenter != null)
+            if (mPresenter != null)
             mPresenter.setHeadsUpStoplist();
     }
 
