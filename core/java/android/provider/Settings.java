@@ -5198,6 +5198,14 @@ public final class Settings {
         public static final String ROAMING_INDICATOR_ICON = "roaming_indicator_icon";
 
         /**
+         * @hide
+         */
+        public static final String OMNI_USE_OLD_MOBILETYPE = "use_old_mobiletype";
+
+        private static final Validator OMNI_USE_OLD_MOBILETYPE_VALIDATOR =
+                BOOLEAN_VALIDATOR;
+
+        /**
          * Battery style
          * @hide
          */
@@ -5327,6 +5335,7 @@ public final class Settings {
             OMNI_NETWORK_TRAFFIC_AUTOHIDE,
             OMNI_NETWORK_TRAFFIC_AUTOHIDE_THRESHOLD,
             BACK_GESTURE_HEIGHT,
+            OMNI_USE_OLD_MOBILETYPE,
         };
 
          /**
@@ -5512,6 +5521,7 @@ public final class Settings {
             PRIVATE_SETTINGS.add(OMNI_NETWORK_TRAFFIC_AUTOHIDE);
             PRIVATE_SETTINGS.add(OMNI_NETWORK_TRAFFIC_AUTOHIDE_THRESHOLD);
             PRIVATE_SETTINGS.add(BACK_GESTURE_HEIGHT);
+            PRIVATE_SETTINGS.add(OMNI_USE_OLD_MOBILETYPE);
         }
 
         /**
@@ -5678,6 +5688,7 @@ public final class Settings {
             VALIDATORS.put(OMNI_NETWORK_TRAFFIC_AUTOHIDE_THRESHOLD,
                     OMNI_NETWORK_TRAFFIC_AUTOHIDE_THRESHOLD_VALIDATOR);
             VALIDATORS.put(BACK_GESTURE_HEIGHT, BACK_GESTURE_HEIGHT_VALIDATOR);
+            VALIDATORS.put(OMNI_USE_OLD_MOBILETYPE, OMNI_USE_OLD_MOBILETYPE_VALIDATOR);
         }
 
         /**
