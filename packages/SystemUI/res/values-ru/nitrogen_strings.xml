@@ -41,6 +41,8 @@
     <string name="accessibility_quick_settings_heads_up_changed_off">Всплывающие уведомления отключены.</string>
     <string name="accessibility_quick_settings_heads_up_changed_on">Всплывающие уведомления включены.</string>
 
+    <string name="quick_settings_usb_tether_label">USB модем</string>
+
     <string name="statusbar_items_title">Редактирование иконок</string>
 
     <string name="lockscreen_default">По умолчанию</string>
