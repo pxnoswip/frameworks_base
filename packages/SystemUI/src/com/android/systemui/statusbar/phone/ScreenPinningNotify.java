@@ -61,7 +61,7 @@ public class ScreenPinningNotify {
             mLastToast.cancel();
         }
         mLastToast = makeAllUserToastAndShow(isGestureNavEnabled
-                ? R.string.screen_pinning_toast_gesture_nav
+        /**        ? R.string.screen_pinning_toast_gesture_nav */
                 : isRecentsButtonVisible
                         ? R.string.screen_pinning_toast
                         : R.string.screen_pinning_toast_recents_invisible);
