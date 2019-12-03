@@ -1476,7 +1476,6 @@ public class NotificationManagerService extends SystemService {
                 Settings.Secure.putInt(resolver,
                         Settings.Secure.NOTIFICATION_BUBBLES,
                         globalSettingValue);
->>>>>>> b3ffe02d852931930472c3a9cc2f8752dc3fc351
             }
         }
     }
