@@ -1473,6 +1473,9 @@ public interface WindowManager extends ViewManager {
          * <p>When this flag is enabled for a window, it automatically sets
          * the system UI visibility flags {@link View#SYSTEM_UI_FLAG_LAYOUT_STABLE} and
          * {@link View#SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN}.</p>
+         *
+         * <p>Note: For devices that support
+         * {@link android.content.pm.PackageManager#FEATURE_AUTOMOTIVE} this flag may be ignored.
          */
         public static final int FLAG_TRANSLUCENT_STATUS = 0x04000000;
 
@@ -1492,6 +1495,10 @@ public interface WindowManager extends ViewManager {
          * <p>When this flag is enabled for a window, it automatically sets
          * the system UI visibility flags {@link View#SYSTEM_UI_FLAG_LAYOUT_STABLE} and
          * {@link View#SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION}.</p>
+         *
+         * <p>Note: For devices that support
+         * {@link android.content.pm.PackageManager#FEATURE_AUTOMOTIVE} this flag can be disabled
+         * by the car manufacturers.
          */
         public static final int FLAG_TRANSLUCENT_NAVIGATION = 0x08000000;
 
@@ -1823,6 +1830,12 @@ public interface WindowManager extends ViewManager {
          * @hide
          */
         public static final int PRIVATE_FLAG_COLOR_SPACE_AGNOSTIC = 0x01000000;
+
+        /**
+         * Window flag: Overrides default power key behavior
+         * @hide
+         */
+        public static final int PRIVATE_FLAG_PREVENT_POWER_KEY = 0x20000000;
 
         /**
          * An internal annotation for flags that can be specified to {@link #softInputMode}.

@@ -96,6 +96,7 @@ import com.android.internal.telephony.TelephonyIntents;
 import com.android.internal.util.Preconditions;
 import com.android.internal.widget.LockPatternUtils;
 import com.android.settingslib.WirelessUtils;
+import com.android.systemui.R;
 import com.android.systemui.shared.system.ActivityManagerWrapper;
 import com.android.systemui.shared.system.TaskStackChangeListener;
 import com.android.systemui.statusbar.phone.KeyguardBypassController;
@@ -226,7 +227,6 @@ public class KeyguardUpdateMonitor implements TrustManager.TrustListener {
     private boolean mSecureCameraLaunched;
     @VisibleForTesting
     protected boolean mTelephonyCapable;
-    protected boolean mPulsing;
 
     // Device provisioning state
     private boolean mDeviceProvisioned;
@@ -849,11 +849,6 @@ public class KeyguardUpdateMonitor implements TrustManager.TrustListener {
                     getCurrentUser());
         }
 
-        // The face timeout message is not very actionable, let's ask the user to
-        // manually retry.
-        if (msgId == FaceManager.FACE_ERROR_TIMEOUT) {
-            errString = mContext.getString(R.string.keyguard_unlock);
-        }
         for (int i = 0; i < mCallbacks.size(); i++) {
             KeyguardUpdateMonitorCallback cb = mCallbacks.get(i).get();
             if (cb != null) {
@@ -1427,6 +1422,7 @@ public class KeyguardUpdateMonitor implements TrustManager.TrustListener {
     }
 
     protected void handleStartedGoingToSleep(int arg1) {
+        mLockIconPressed = false;
         clearBiometricRecognized();
         final int count = mCallbacks.size();
         for (int i = 0; i < count; i++) {
@@ -1462,7 +1458,6 @@ public class KeyguardUpdateMonitor implements TrustManager.TrustListener {
     }
 
     private void handleScreenTurnedOff() {
-        mLockIconPressed = false;
         mHardwareFingerprintUnavailableRetryCount = 0;
         mHardwareFaceUnavailableRetryCount = 0;
         final int count = mCallbacks.size();
@@ -1512,7 +1507,7 @@ public class KeyguardUpdateMonitor implements TrustManager.TrustListener {
         mDeviceProvisioned = isDeviceProvisionedInSettingsDb();
         mStrongAuthTracker = new StrongAuthTracker(context, this::notifyStrongAuthStateChanged);
         mFingerprintWakeAndUnlock = mContext.getResources().getBoolean(
-                com.android.keyguard.R.bool.config_fingerprintWakeAndUnlock);
+                R.bool.config_fingerprintWakeAndUnlock);
 
         // Since device can't be un-provisioned, we only need to register a content observer
         // to update mDeviceProvisioned when we are...
@@ -1667,6 +1662,13 @@ public class KeyguardUpdateMonitor implements TrustManager.TrustListener {
         updateFaceListeningState();
     }
 
+    /**
+     * In case face auth is running, cancel it.
+     */
+    public void cancelFaceAuth() {
+        stopListeningForFace();
+    }
+
     private void updateFaceListeningState() {
         // If this message exists, we should not authenticate again until this message is
         // consumed by the handler
@@ -1712,7 +1714,10 @@ public class KeyguardUpdateMonitor implements TrustManager.TrustListener {
         }
     }
 
-    private boolean shouldListenForFace() {
+    /**
+     * If face auth is allows to scan on this exact moment.
+     */
+    public boolean shouldListenForFace() {
         final boolean awakeKeyguard = mKeyguardIsVisible && mDeviceInteractive && !mGoingToSleep;
         final int user = getCurrentUser();
         final int strongAuth = mStrongAuthTracker.getStrongAuthForUser(user);
@@ -2355,7 +2360,6 @@ public class KeyguardUpdateMonitor implements TrustManager.TrustListener {
         callback.onClockVisibilityChanged();
         callback.onKeyguardVisibilityChangedRaw(mKeyguardIsVisible);
         callback.onTelephonyCapable(mTelephonyCapable);
-        callback.onPulsing(mPulsing);
         for (Entry<Integer, SimData> data : mSimDatas.entrySet()) {
             final SimData state = data.getValue();
             callback.onSimStateChanged(state.subId, state.slotId, state.simState);
@@ -2698,16 +2702,5 @@ public class KeyguardUpdateMonitor implements TrustManager.TrustListener {
             pw.println("    enabledByUser=" + mFaceSettingEnabledForUser.get(userId));
             pw.println("    mSecureCameraLaunched=" + mSecureCameraLaunched);
         }
-    }
-
-    public boolean setPulsing(boolean pulsing) {
-        mPulsing = pulsing;
-        for (int i = 0; i < mCallbacks.size(); i++) {
-            KeyguardUpdateMonitorCallback cb = mCallbacks.get(i).get();
-            if (cb != null) {
-                cb.onPulsing(mPulsing);
-            }
-        }
-        return mPulsing;
     }
 }

@@ -198,6 +198,7 @@ import android.content.pm.VersionedPackage;
 import android.content.pm.dex.ArtManager;
 import android.content.pm.dex.DexMetadataHelper;
 import android.content.pm.dex.IArtManager;
+import android.content.pm.permission.SplitPermissionInfoParcelable;
 import android.content.res.Resources;
 import android.content.rollback.IRollbackManager;
 import android.database.ContentObserver;
@@ -238,6 +239,7 @@ import android.os.storage.StorageManager;
 import android.os.storage.StorageManagerInternal;
 import android.os.storage.VolumeInfo;
 import android.os.storage.VolumeRecord;
+import android.permission.PermissionManager;
 import android.provider.DeviceConfig;
 import android.provider.MediaStore;
 import android.provider.Settings.Global;
@@ -1247,6 +1249,8 @@ public class PackageManagerService extends IPackageManager.Stub
                         filter.hasDataScheme(IntentFilter.SCHEME_HTTPS));
     }
 
+    ArrayList<ComponentName> mDisabledComponentsList;
+
     // Set of pending broadcasts for aggregating enable/disable of components.
     static class PendingPackageBroadcasts {
         // for each user id, a map of <package name -> components within that package>
@@ -2023,6 +2027,14 @@ public class PackageManagerService extends IPackageManager.Stub
                     pkgList.add(packageName);
                     sendResourcesChangedBroadcast(true, true, pkgList, uidArray, null);
                 }
+            } else if (!ArrayUtils.isEmpty(res.libraryConsumers)) { // if static shared lib
+                for (int i = 0; i < res.libraryConsumers.size(); i++) {
+                    PackageParser.Package pkg = res.libraryConsumers.get(i);
+                    // send broadcast that all consumers of the static shared library have changed
+                    sendPackageChangedBroadcast(pkg.packageName, false /*killFlag*/,
+                            new ArrayList<>(Collections.singletonList(pkg.packageName)),
+                            pkg.applicationInfo.uid);
+                }
             }
 
             // Work that needs to happen on first install within each user
@@ -2119,6 +2131,12 @@ public class PackageManagerService extends IPackageManager.Stub
                 notifyInstallObserver(packageName);
             }
         }
+    }
+
+    @Override
+    public List<SplitPermissionInfoParcelable> getSplitPermissions() {
+        return PermissionManager.splitPermissionInfoListToParcelableList(
+                SystemConfig.getInstance().getSplitPermissions());
     }
 
     private void notifyInstallObserver(String packageName) {
@@ -3227,6 +3245,17 @@ public class PackageManagerService extends IPackageManager.Stub
                 Slog.i(TAG, "Deferred reconcileAppsData finished " + count + " packages");
             }, "prepareAppData");
 
+            // Disable components marked for disabling at build-time
+            mDisabledComponentsList = new ArrayList<ComponentName>();
+            enableComponents(mContext.getResources().getStringArray(
+                    com.android.internal.R.array.config_deviceDisabledComponents), false);
+            enableComponents(mContext.getResources().getStringArray(
+                    com.android.internal.R.array.config_globallyDisabledComponents), false);
+
+            // Enable components marked for forced-enable at build-time
+            enableComponents(mContext.getResources().getStringArray(
+                    com.android.internal.R.array.config_forceEnabledComponents), true);
+
             // If this is first boot after an OTA, and a normal boot, then
             // we need to clear code cache directories.
             // Note that we do *not* clear the application profiles. These remain valid
@@ -3377,6 +3406,29 @@ public class PackageManagerService extends IPackageManager.Stub
         mServiceStartWithDelay = SystemClock.uptimeMillis() + (60 * 1000L);
 
         Trace.traceEnd(TRACE_TAG_PACKAGE_MANAGER);
+    }
+
+    private void enableComponents(String[] components, boolean enable) {
+        // Disable or enable components marked at build-time
+        for (String name : components) {
+            ComponentName cn = ComponentName.unflattenFromString(name);
+            if (!enable) {
+                mDisabledComponentsList.add(cn);
+            }
+            Slog.v(TAG, "Changing enabled state of " + name + " to " + enable);
+            String className = cn.getClassName();
+            PackageSetting pkgSetting = mSettings.mPackages.get(cn.getPackageName());
+            if (pkgSetting == null || pkgSetting.pkg == null
+                    || !pkgSetting.pkg.hasComponentClassName(className)) {
+                Slog.w(TAG, "Unable to change enabled state of " + name + " to " + enable);
+                continue;
+            }
+            if (enable) {
+                pkgSetting.enableComponentLPw(className, UserHandle.USER_OWNER);
+            } else {
+                pkgSetting.disableComponentLPw(className, UserHandle.USER_OWNER);
+            }
+        }
     }
 
     /**
@@ -12193,6 +12245,9 @@ public class PackageManagerService extends IPackageManager.Stub
                 }
             }
         }
+        if (reconciledPkg.installResult != null) {
+            reconciledPkg.installResult.libraryConsumers = clientLibPkgs;
+        }
 
         if ((scanFlags & SCAN_BOOTING) != 0) {
             // No apps can run during boot scan, so they don't need to be frozen
@@ -16046,6 +16101,8 @@ public class PackageManagerService extends IPackageManager.Stub
         String installerPackageName;
         PackageRemovedInfo removedInfo;
         ArrayMap<String, PackageInstalledInfo> addedChildPackages;
+        // The set of packages consuming this shared library or null if no consumers exist.
+        ArrayList<PackageParser.Package> libraryConsumers;
 
         public void setError(int code, String msg) {
             setReturnCode(code);
@@ -18800,8 +18857,14 @@ public class PackageManagerService extends IPackageManager.Stub
                 }
             }
             if (removedAppId >= 0) {
+                // If a system app's updates are uninstalled the UID is not actually removed. Some
+                // services need to know the package name affected.
+                if (extras.getBoolean(Intent.EXTRA_REPLACING, false)) {
+                    extras.putString(Intent.EXTRA_PACKAGE_NAME, removedPackage);
+                }
+
                 packageSender.sendPackageBroadcast(Intent.ACTION_UID_REMOVED,
-                    null, extras, Intent.FLAG_RECEIVER_INCLUDE_BACKGROUND,
+                        null, extras, Intent.FLAG_RECEIVER_INCLUDE_BACKGROUND,
                     null, null, broadcastUsers, instantUserIds);
             }
         }
@@ -18890,19 +18953,20 @@ public class PackageManagerService extends IPackageManager.Stub
                         // or packages running under the shared user of the removed
                         // package if revoking the permissions requested only by the removed
                         // package is successful and this causes a change in gids.
+                        boolean shouldKill = false;
                         for (int userId : UserManagerService.getInstance().getUserIds()) {
                             final int userIdToKill = mSettings.updateSharedUserPermsLPw(deletedPs,
                                     userId);
-                            if (userIdToKill == UserHandle.USER_ALL
-                                    || userIdToKill >= UserHandle.USER_SYSTEM) {
-                                // If gids changed for this user, kill all affected packages.
-                                mHandler.post(() -> {
-                                    // This has to happen with no lock held.
-                                    killApplication(deletedPs.name, deletedPs.appId,
-                                            KILL_APP_REASON_GIDS_CHANGED);
-                                });
-                                break;
-                            }
+                            shouldKill |= userIdToKill == UserHandle.USER_ALL
+                                    || userIdToKill >= UserHandle.USER_SYSTEM;
+                        }
+                        // If gids changed, kill all affected packages.
+                        if (shouldKill) {
+                            mHandler.post(() -> {
+                                // This has to happen with no lock held.
+                                killApplication(deletedPs.name, deletedPs.appId,
+                                        KILL_APP_REASON_GIDS_CHANGED);
+                            });
                         }
                     }
                     clearPackagePreferredActivitiesLPw(
@@ -20859,7 +20923,7 @@ public class PackageManagerService extends IPackageManager.Stub
 
     public void sendSessionCommitBroadcast(PackageInstaller.SessionInfo sessionInfo, int userId) {
         UserManagerService ums = UserManagerService.getInstance();
-        if (ums != null) {
+        if (ums != null && !sessionInfo.isStaged()) {
             final UserInfo parent = ums.getProfileParent(userId);
             final int launcherUid = (parent != null) ? parent.id : userId;
             final ComponentName launcherComponent = getDefaultHomeActivity(launcherUid);
@@ -21187,6 +21251,12 @@ public class PackageManagerService extends IPackageManager.Stub
     public void setComponentEnabledSetting(ComponentName componentName,
             int newState, int flags, int userId) {
         if (!sUserManager.exists(userId)) return;
+        // Don't allow to enable components marked for disabling at build-time
+        if (mDisabledComponentsList.contains(componentName)) {
+            Slog.d(TAG, "Ignoring attempt to set enabled state of disabled component "
+                    + componentName.flattenToString());
+            return;
+        }
         setEnabledSetting(componentName.getPackageName(),
                 componentName.getClassName(), newState, flags, userId, null);
     }

@@ -32,4 +32,28 @@
 
     <!-- Whether to cleanup fingerprints upon connection to the daemon and when user switches -->
     <java-symbol type="bool" name="config_cleanupUnusedFingerprints" />
+
+    <!-- Whether to use scaled brightness (set -1 to disable) -->
+    <java-symbol type="integer" name="config_useScaleBrightness" />
+
+    <!-- Whether notify fingerprint client of successful cancelled authentication -->
+    <java-symbol type="bool" name="config_notifyClientOnFingerprintCancelSuccess" />
+
+    <!-- Leds -->
+    <java-symbol type="bool" name="config_intrusiveBatteryLed" />
+
+    <!-- Whether to send camera status intent -->
+    <java-symbol type="bool" name="config_sendCameraStatusIntent" />
+
+    <!-- Package Manager -->
+    <java-symbol type="array" name="config_deviceDisabledComponents" />
+    <java-symbol type="array" name="config_globallyDisabledComponents" />
+    <java-symbol type="array" name="config_forceEnabledComponents" />
+
+    <!-- Post reset runnable for all clients -->
+    <java-symbol type="bool" name="config_fingerprintPostResetRunnableForAllClients" />
+
+    <!-- For Pdn throttle feature -->
+    <java-symbol type="bool" name="config_pdp_retry_for_29_33_55_enabled" />
+
 </resources>
