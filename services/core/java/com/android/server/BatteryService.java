@@ -32,7 +32,6 @@ import android.hardware.health.V2_0.Result;
 import android.hidl.manager.V1_0.IServiceManager;
 import android.hidl.manager.V1_0.IServiceNotification;
 import android.metrics.LogMaker;
-import android.content.res.Resources;
 import android.os.BatteryManager;
 import android.os.BatteryManagerInternal;
 import android.os.BatteryProperty;
@@ -199,8 +198,6 @@ public final class BatteryService extends SystemService {
     private int mBatteryMediumARGB;
     private int mBatteryFullARGB;
     private int mBatteryReallyFullARGB;
-    // Battery light customization
-    private boolean mBatteryLightEnabled;
 
     private boolean mSentLowBatteryBroadcast = false;
 
@@ -254,8 +251,6 @@ public final class BatteryService extends SystemService {
             invalidChargerObserver.startObserving(
                     "DEVPATH=/devices/virtual/switch/invalid_charger");
         }
-        mBatteryLightEnabled = mContext.getResources().getBoolean(
-                com.android.internal.R.bool.config_intrusiveBatteryLed);
     }
 
     @Override
@@ -1214,7 +1209,7 @@ public final class BatteryService extends SystemService {
             }
             final int level = mHealthInfo.batteryLevel;
             final int status = mHealthInfo.batteryStatus;
-            if (!mLightEnabled || (mIsDndActive && !mAllowBatteryLightOnDnd) || !mBatteryLightEnabled) {
+            if (!mLightEnabled || (mIsDndActive && !mAllowBatteryLightOnDnd)) {
                 mBatteryLight.turnOff();
             } else if (level < mLowBatteryWarningLevel) {
                 if (status == BatteryManager.BATTERY_STATUS_CHARGING) {
