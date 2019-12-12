@@ -238,7 +238,6 @@ import com.android.systemui.statusbar.policy.UserSwitcherController;
 import com.android.systemui.statusbar.policy.ZenModeController;
 import com.android.systemui.util.InjectionInflationController;
 import com.android.systemui.volume.VolumeComponent;
-import com.android.systemui.statusbar.policy.TelephonyIcons;
 
 import java.io.FileDescriptor;
 import java.io.PrintWriter;
@@ -259,7 +258,6 @@ public class StatusBar extends SystemUI implements DemoMode,
         ActivityLaunchAnimator.Callback, AppOpsController.Callback {
     public static final boolean MULTIUSER_DEBUG = false;
 
-    public static boolean USE_OLD_MOBILETYPE = false;
     public static final boolean ENABLE_CHILD_NOTIFICATIONS
             = SystemProperties.getBoolean("debug.child_notifs", true);
 
@@ -3892,9 +3890,6 @@ public class StatusBar extends SystemUI implements DemoMode,
                     Settings.System.DOUBLE_TAP_SLEEP_LOCKSCREEN),
                     false, this, UserHandle.USER_ALL);
             resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.OMNI_USE_OLD_MOBILETYPE),
-                    false, this);
-            resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.PULSE_ON_NEW_TRACKS),
                     false, this, UserHandle.USER_ALL);
             resolver.registerContentObserver(Settings.Secure.getUriFor(
@@ -3919,10 +3914,6 @@ public class StatusBar extends SystemUI implements DemoMode,
             setHeadsUpBlacklist();
             setStatusDoubleTapToSleep();
             setPulseOnNewTracks();
-            USE_OLD_MOBILETYPE = Settings.System.getIntForUser(mContext.getContentResolver(),
-                    Settings.System.OMNI_USE_OLD_MOBILETYPE, 0,
-                    UserHandle.USER_CURRENT) != 0;
-            TelephonyIcons.updateIcons(USE_OLD_MOBILETYPE);
             setHideArrowForBackGesture();
         }
     }
