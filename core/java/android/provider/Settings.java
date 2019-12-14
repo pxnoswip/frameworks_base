@@ -4607,6 +4607,15 @@ public final class Settings {
          private static final Validator PULSE_AMBIENT_LIGHT_COLOR_VALIDATOR = ANY_STRING_VALIDATOR;
 
         /**
+          * Whether to use color from wallpaper for Ambient edge light
+          * @hide
+          */
+         public static final String PULSE_AMBIENT_LIGHT_AUTO_COLOR = "pulse_ambient_light_auto_color";
+
+         /** @hide */
+         private static final Validator PULSE_AMBIENT_LIGHT_AUTO_COLOR_VALIDATOR = BOOLEAN_VALIDATOR;
+
+        /**
          * @hide
          */
         public static final String DEVICE_FEATURE_SETTINGS = "device_feature_settings";
@@ -5418,6 +5427,7 @@ public final class Settings {
             OMNI_CUSTOM_FP_ICON,
             PULSE_AMBIENT_LIGHT,
             PULSE_AMBIENT_LIGHT_COLOR,
+            PULSE_AMBIENT_LIGHT_AUTO_COLOR,
             OMNI_QS_LAYOUT_COLUMNS_LANDSCAPE,
             OMNI_QS_LAYOUT_COLUMNS,
             OMNI_QS_TILE_TITLE_VISIBILITY,
@@ -5611,6 +5621,7 @@ public final class Settings {
             PRIVATE_SETTINGS.add(OMNI_CUSTOM_FP_ICON);
             PRIVATE_SETTINGS.add(PULSE_AMBIENT_LIGHT);
             PRIVATE_SETTINGS.add(PULSE_AMBIENT_LIGHT_COLOR);
+            PRIVATE_SETTINGS.add(PULSE_AMBIENT_LIGHT_AUTO_COLOR);
             PRIVATE_SETTINGS.add(OMNI_QS_LAYOUT_COLUMNS_LANDSCAPE);
             PRIVATE_SETTINGS.add(OMNI_QS_LAYOUT_COLUMNS);
             PRIVATE_SETTINGS.add(OMNI_QS_TILE_TITLE_VISIBILITY);
@@ -5783,6 +5794,7 @@ public final class Settings {
                     OMNI_CUSTOM_FP_ICON_VALIDATOR);
             VALIDATORS.put(PULSE_AMBIENT_LIGHT, PULSE_AMBIENT_LIGHT_VALIDATOR);
             VALIDATORS.put(PULSE_AMBIENT_LIGHT_COLOR, PULSE_AMBIENT_LIGHT_COLOR_VALIDATOR);
+            VALIDATORS.put(PULSE_AMBIENT_LIGHT_AUTO_COLOR, PULSE_AMBIENT_LIGHT_AUTO_COLOR_VALIDATOR);
             VALIDATORS.put(OMNI_QS_LAYOUT_COLUMNS_LANDSCAPE,
                     OMNI_QS_LAYOUT_COLUMNS_LANDSCAPE_VALIDATOR);
             VALIDATORS.put(OMNI_QS_LAYOUT_COLUMNS, OMNI_QS_LAYOUT_COLUMNS_VALIDATOR);
