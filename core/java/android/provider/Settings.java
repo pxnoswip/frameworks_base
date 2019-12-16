@@ -4975,6 +4975,12 @@ public final class Settings {
                 BOOLEAN_VALIDATOR;
 
         /**
+         * FOD icon picker
+         * @hide
+         */
+        public static final String FOD_ICON = "fod_icon";
+
+        /**
          * Whether to display sound panel in the power menu
          *
          * @hide
