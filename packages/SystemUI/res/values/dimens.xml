@@ -63,7 +63,7 @@
     <dimen name="status_bar_icon_size">@*android:dimen/status_bar_icon_size</dimen>
 
     <!-- Default horizontal drawable padding for status bar icons. -->
-    <dimen name="status_bar_horizontal_padding">2.5dp</dimen>
+    <dimen name="status_bar_horizontal_padding">1.5dp</dimen>
 
     <!-- Height of the battery icon in the status bar. -->
     <dimen name="status_bar_battery_icon_height">13.0dp</dimen>
@@ -85,7 +85,7 @@
     <dimen name="status_bar_left_clock_starting_padding">0dp</dimen>
 
     <!-- End padding for left-aligned status bar clock -->
-    <dimen name="status_bar_left_clock_end_padding">7dp</dimen>
+    <dimen name="status_bar_left_clock_end_padding">3dp</dimen>
 
     <!-- Spacing after the wifi signals that is present if there are any icons following it. -->
     <dimen name="status_bar_wifi_signal_spacer_width">2dp</dimen>
