@@ -315,7 +315,6 @@ public class QuickStatusBarHeader extends RelativeLayout implements
         boolean shouldUseWallpaperTextColor =
                 newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE;
         mClockView.useWallpaperTextColor(shouldUseWallpaperTextColor);
-        mBatteryRemainingIcon.useWallpaperTextColor(shouldUseWallpaperTextColor);
     }
 
     @Override
@@ -548,10 +547,7 @@ public class QuickStatusBarHeader extends RelativeLayout implements
                 android.R.attr.colorForeground);
         float intensity = getColorIntensity(colorForeground);
         int fillColor = mDualToneHandler.getSingleColor(intensity);
-       //  mBatteryRemainingIcon.onDarkChanged(tintArea, intensity, fillColor);
-        mBatteryRemainingIcon.setColorsFromContext(mHost.getContext());
-        mBatteryRemainingIcon.onDarkChanged(new Rect(), 0, DarkIconDispatcher.DEFAULT_ICON_TINT);
-
+        mBatteryRemainingIcon.onDarkChanged(tintArea, intensity, fillColor);
     }
 
     public void setCallback(Callback qsPanelCallback) {
