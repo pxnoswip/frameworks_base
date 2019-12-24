@@ -51,5 +51,6 @@
         android:layout_height="match_parent"
         android:layout_width="wrap_content"
         android:gravity="center_vertical|end"
+        systemui:textAppearance="@style/TextAppearance.QS.Status"
         android:visibility="gone" />
 </LinearLayout>
