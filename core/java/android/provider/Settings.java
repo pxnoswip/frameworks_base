@@ -5013,6 +5013,14 @@ public final class Settings {
         private static final Validator POWERMENU_RESTART_RECOVERY_VALIDATOR =
                 BOOLEAN_VALIDATOR;
 
+       /**
+         * @hide
+         */
+        public static final String POWERMENU_RESTART_SYSTEMUI = "powermenu_restart_systemui";
+        /** @hide */
+        private static final Validator POWERMENU_RESTART_SYSTEMUI_VALIDATOR =
+                BOOLEAN_VALIDATOR;
+
         /**
          * Whether to display power in the power menu
          *
@@ -5333,6 +5341,7 @@ public final class Settings {
             POWERMENU_AIRPLANE,
             POWERMENU_RESTART,
             POWERMENU_RESTART_RECOVERY,
+            POWERMENU_RESTART_SYSTEMUI,
             POWERMENU_POWER,
             POWERMENU_USERS,
             POWERMENU_LOGOUT,
@@ -5520,6 +5529,7 @@ public final class Settings {
             PRIVATE_SETTINGS.add(POWERMENU_AIRPLANE);
             PRIVATE_SETTINGS.add(POWERMENU_RESTART);
             PRIVATE_SETTINGS.add(POWERMENU_RESTART_RECOVERY);
+            PRIVATE_SETTINGS.add(POWERMENU_RESTART_SYSTEMUI);
             PRIVATE_SETTINGS.add(POWERMENU_POWER);
             PRIVATE_SETTINGS.add(POWERMENU_USERS);
             PRIVATE_SETTINGS.add(POWERMENU_LOGOUT);
@@ -5681,6 +5691,7 @@ public final class Settings {
             VALIDATORS.put(POWERMENU_AIRPLANE, POWERMENU_AIRPLANE_VALIDATOR);
             VALIDATORS.put(POWERMENU_RESTART, POWERMENU_RESTART_VALIDATOR);
             VALIDATORS.put(POWERMENU_RESTART_RECOVERY, POWERMENU_RESTART_RECOVERY_VALIDATOR);
+            VALIDATORS.put(POWERMENU_RESTART_SYSTEMUI, POWERMENU_RESTART_SYSTEMUI_VALIDATOR);
             VALIDATORS.put(POWERMENU_POWER, POWERMENU_POWER_VALIDATOR);
             VALIDATORS.put(POWERMENU_USERS, POWERMENU_USERS_VALIDATOR);
             VALIDATORS.put(POWERMENU_LOGOUT, POWERMENU_LOGOUT_VALIDATOR);
