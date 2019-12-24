@@ -431,7 +431,10 @@ public class GlobalActionsDialog implements DialogInterface.OnDismissListener,
                     mItems.add(new AdvancedRestartAction());
                 }
             } else if (GLOBAL_ACTION_KEY_RESTART_SYSTEMUI.equals(actionKey)) {
+                if (Settings.System.getInt(mContext.getContentResolver(),
+                        Settings.System.POWERMENU_RESTART_SYSTEMUI, 1) == 1) {
                 mItems.add(new RestartUIAction());
+               }
             } else {
                 Log.e(TAG, "Invalid global action key " + actionKey);
             }
