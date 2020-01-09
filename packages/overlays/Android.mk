@@ -45,6 +45,7 @@ LOCAL_REQUIRED_MODULES := \
 	FontSamsungOneSourceOverlay \
 	FontSonySketchSourceOverlay \
 	FontSurferSourceOverlay \
+	FontProductSansSourceOverlay \
 	FontNokiaPureSourceOverlay \
 	FontFifa2018SourceOverlay \
 	FontOswaldSourceOverlay \
