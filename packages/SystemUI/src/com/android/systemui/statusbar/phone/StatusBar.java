@@ -3893,6 +3893,9 @@ public class StatusBar extends SystemUI implements DemoMode,
             resolver.registerContentObserver(Settings.Secure.getUriFor(
                     Settings.Secure.SHOW_BACK_ARROW_GESTURE),
                     false, this, UserHandle.USER_ALL);
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.SHOW_LOCKSCREEN_MEDIA_ART),
+                    false, this, UserHandle.USER_ALL);
         }
          @Override
         public void onChange(boolean selfChange, Uri uri) {
@@ -3913,6 +3916,7 @@ public class StatusBar extends SystemUI implements DemoMode,
             setStatusDoubleTapToSleep();
             setPulseOnNewTracks();
             setHideArrowForBackGesture();
+            setLockScreenMediaArt();
         }
     }
 
@@ -3935,6 +3939,12 @@ public class StatusBar extends SystemUI implements DemoMode,
     private void setStatusDoubleTapToSleep() {
         if (mStatusBarWindow != null) {
             mStatusBarWindow.updateSettings();
+        }
+    }
+
+    private void setLockScreenMediaArt() {
+        if (mMediaManager != null) {
+            mMediaManager.setLockScreenMediaArt();
         }
     }
 
