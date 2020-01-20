@@ -180,7 +180,8 @@ public class FODCircleView extends ImageView implements OnTouchListener {
 
         @Override
         public void onKeyguardVisibilityChanged(boolean showing) {
-            super.onKeyguardVisibilityChanged(showing);
+            mIsKeyguard = showing;
+            resetPosition();
             mIsInsideCircle = false;
             setCustomIcon();
         }
@@ -475,6 +476,11 @@ public class FODCircleView extends ImageView implements OnTouchListener {
                 break;
             default:
                 throw new IllegalArgumentException("Unknown rotation: " + rotation);
+        }
+
+        if (mIsKeyguard) {
+            mParams.x = mPositionX;
+            mParams.y = mPositionY;
         }
 
         if (mIsDreaming) {
