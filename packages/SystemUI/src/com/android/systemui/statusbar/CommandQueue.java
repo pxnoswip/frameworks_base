@@ -116,8 +116,6 @@ public class CommandQueue extends IStatusBar.Stub implements CallbackController<
     private static final int MSG_SHOW_PINNING_TOAST_ENTER_EXIT = 45 << MSG_SHIFT;
     private static final int MSG_SHOW_PINNING_TOAST_ESCAPE     = 46 << MSG_SHIFT;
     private static final int MSG_RECENTS_ANIMATION_STATE_CHANGED = 47 << MSG_SHIFT;
-    private static final int MSG_SHOW_IN_DISPLAY_FINGERPRINT_VIEW = 48 << MSG_SHIFT;
-    private static final int MSG_HIDE_IN_DISPLAY_FINGERPRINT_VIEW = 49 << MSG_SHIFT;
     private static final int MSG_TOGGLE_CAMERA_FLASH           = 50 << MSG_SHIFT;
     private static final int MSG_TOGGLE_CAMERA_FLASH_STATE     = 59 << MSG_SHIFT;
 
@@ -281,8 +279,6 @@ public class CommandQueue extends IStatusBar.Stub implements CallbackController<
         default void onBiometricHelp(String message) { }
         default void onBiometricError(String error) { }
         default void hideBiometricDialog() { }
-        default void showInDisplayFingerprintView() { }
-        default void hideInDisplayFingerprintView() { }
 
         /**
          * @see IStatusBar#onDisplayReady(int)
@@ -794,20 +790,6 @@ public class CommandQueue extends IStatusBar.Stub implements CallbackController<
     }
 
     @Override
-    public void showInDisplayFingerprintView() {
-        synchronized (mLock) {
-            mHandler.obtainMessage(MSG_SHOW_IN_DISPLAY_FINGERPRINT_VIEW).sendToTarget();
-        }
-    }
-
-    @Override
-    public void hideInDisplayFingerprintView() {
-        synchronized (mLock) {
-            mHandler.obtainMessage(MSG_HIDE_IN_DISPLAY_FINGERPRINT_VIEW).sendToTarget();
-        }
-    }
-
-    @Override
     public void onDisplayReady(int displayId) {
         synchronized (mLock) {
             mHandler.obtainMessage(MSG_DISPLAY_READY, displayId, 0).sendToTarget();
@@ -1133,16 +1115,6 @@ public class CommandQueue extends IStatusBar.Stub implements CallbackController<
                         mCallbacks.get(i).toggleCameraFlash();
                     }
                     break;
-                case MSG_SHOW_IN_DISPLAY_FINGERPRINT_VIEW:
-                    for (int i = 0; i < mCallbacks.size(); i++) {
-                        mCallbacks.get(i).showInDisplayFingerprintView();
-                    }
-                    break;
-                case MSG_HIDE_IN_DISPLAY_FINGERPRINT_VIEW:
-                    for (int i = 0; i < mCallbacks.size(); i++) {
-                        mCallbacks.get(i).hideInDisplayFingerprintView();
-                    }
-                   break;
                 case MSG_TOGGLE_CAMERA_FLASH_STATE:
                     for (int i = 0; i < mCallbacks.size(); i++) {
                         mCallbacks.get(i).toggleCameraFlashState(msg.arg1 != 0);
