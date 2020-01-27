@@ -5147,6 +5147,12 @@ public final class Settings {
                 ANY_STRING_VALIDATOR;
 
         /**
+         * FOD recognizing animation
+         * @hide
+         */
+        public static final String FOD_RECOGNIZING_ANIMATION = "fod_recognizing_animation";
+
+        /**
          * Whether to display qs tile titles in the qs panel
          * @hide
          */
