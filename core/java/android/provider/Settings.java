@@ -5265,6 +5265,28 @@ public final class Settings {
                 BOOLEAN_VALIDATOR;
 
         /**
+         * User definable value of pulse notification screen brightness
+         *
+         * @hide
+         */
+        public static final String OMNI_PULSE_BRIGHTNESS = "pulse_brightness";
+
+        /** @hide */
+        private static final Validator OMNI_PULSE_BRIGHTNESS_VALIDATOR =
+                ANY_INTEGER_VALIDATOR;
+
+        /**
+         * User definable value of aod screen brightness
+         *
+         * @hide
+         */
+        public static final String OMNI_DOZE_BRIGHTNESS = "doze_brightness";
+
+        /** @hide */
+        private static final Validator OMNI_DOZE_BRIGHTNESS_VALIDATOR =
+                ANY_INTEGER_VALIDATOR;
+
+        /**
          * media artwork wallpaper on lockscreen
          * @hide
          */
@@ -5392,6 +5414,8 @@ public final class Settings {
             NAV_BAR_GESTURAL_HIDE_NAV,
             SHOW_LOCKSCREEN_MEDIA_ART,
             OMNI_LONG_PRESS_POWER_TORCH,
+            OMNI_PULSE_BRIGHTNESS,
+            OMNI_DOZE_BRIGHTNESS,
         };
 
          /**
@@ -5583,6 +5607,8 @@ public final class Settings {
             PRIVATE_SETTINGS.add(NAV_BAR_GESTURAL_HIDE_NAV);
             PRIVATE_SETTINGS.add(SHOW_LOCKSCREEN_MEDIA_ART);
             PRIVATE_SETTINGS.add(OMNI_LONG_PRESS_POWER_TORCH);
+            PRIVATE_SETTINGS.add(OMNI_PULSE_BRIGHTNESS);
+            PRIVATE_SETTINGS.add(OMNI_DOZE_BRIGHTNESS);
         }
 
         /**
@@ -5756,6 +5782,8 @@ public final class Settings {
             VALIDATORS.put(NAV_BAR_GESTURAL_HIDE_NAV, NAV_BAR_GESTURAL_HIDE_NAV_VALIDATOR);
             VALIDATORS.put(SHOW_LOCKSCREEN_MEDIA_ART, SHOW_LOCKSCREEN_MEDIA_ART_VALIDATOR);
             VALIDATORS.put(OMNI_LONG_PRESS_POWER_TORCH, OMNI_LONG_PRESS_POWER_TORCH_VALIDATOR);
+            VALIDATORS.put(OMNI_PULSE_BRIGHTNESS, OMNI_PULSE_BRIGHTNESS_VALIDATOR);
+            VALIDATORS.put(OMNI_DOZE_BRIGHTNESS, OMNI_DOZE_BRIGHTNESS_VALIDATOR);
         }
 
         /**
