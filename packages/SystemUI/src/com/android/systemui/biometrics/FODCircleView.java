@@ -84,6 +84,7 @@ public class FODCircleView extends ImageView implements OnTouchListener {
     private boolean mIsPulsing;
     private boolean mIsScreenOn;
     private boolean mIsViewAdded;
+    private boolean mIsKeyguard;
 
     private Handler mHandler;
 
