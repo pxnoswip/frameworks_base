@@ -2203,7 +2203,7 @@ public class PhoneWindowManager implements WindowManagerPolicy {
                     Settings.System.OMNI_LONG_PRESS_POWER_TORCH, 0,
 		    UserHandle.USER_CURRENT) != 0;
             mGlobalActionsOnLockDisable = Settings.Secure.getIntForUser(resolver,
-                    Settings.Secure.LOCK_POWER_MENU_DISABLED, 1,
+                    Settings.Secure.LOCK_POWER_MENU_DISABLED, 0,
                     UserHandle.USER_CURRENT) != 0;
         }
         if (updateRotation) {
