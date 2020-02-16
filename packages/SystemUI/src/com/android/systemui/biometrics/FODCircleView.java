@@ -107,11 +107,6 @@ public class FODCircleView extends ImageView {
         @Override
         public void onFingerUp() {
             mHandler.post(() -> hideCircle());
-            mHandler.post(() -> {
-                setCustomIcon();
-
-                invalidate();
-            });
         }
     };
 
@@ -179,7 +174,6 @@ public class FODCircleView extends ImageView {
         mPaintFingerprint.setAntiAlias(true);
         mPaintFingerprint.setColor(res.getColor(R.color.config_fodColor));
 
-        setCustomIcon();
         mWindowManager = context.getSystemService(WindowManager.class);
 
         mNavigationBarSize = res.getDimensionPixelSize(R.dimen.navigation_bar_size);
@@ -201,7 +195,6 @@ public class FODCircleView extends ImageView {
         mParams.gravity = Gravity.TOP | Gravity.LEFT;
 
         mWindowManager.addView(this, mParams);
-        setCustomIcon();
         updatePosition();
         hide();
 
@@ -251,7 +244,6 @@ public class FODCircleView extends ImageView {
         } else if (event.getAction() == MotionEvent.ACTION_UP) {
             hideCircle();
             mFODAnimation.hideFODanimation();
-            setCustomIcon();
             return true;
         } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
             return true;
@@ -326,7 +318,6 @@ public class FODCircleView extends ImageView {
         if (mIsDreaming) mWakeLock.acquire(500);
         setDim(true);
         updateAlpha();
-        setCustomIcon();
 
         setImageDrawable(null);
         invalidate();
@@ -335,7 +326,7 @@ public class FODCircleView extends ImageView {
     public void hideCircle() {
         mIsCircleShowing = false;
 
-        setFODIcon();
+        setCustomIcon();
         if (mFODAnimation != null) {
             mFODAnimation.setFODAnim();
         }
@@ -357,7 +348,7 @@ public class FODCircleView extends ImageView {
                 Settings.System.FOD_ICON, 0);
     }
 
-    private void setFODIcon() {
+/**    private void setFODIcon() {
         int fodicon = getFODIcon();
 
         mIsRecognizingAnimEnabled = Settings.System.getInt(mContext.getContentResolver(),
@@ -443,7 +434,7 @@ public class FODCircleView extends ImageView {
         red = red > 255 ? 255 : red;
 
         return Color.argb(Color.alpha(color), red, green, blue);
-    }
+    } **/
 
     public void show() {
         if (mIsBouncer) {
@@ -541,6 +532,9 @@ public class FODCircleView extends ImageView {
         final String customIconURI = Settings.System.getStringForUser(getContext().getContentResolver(),
                 Settings.System.OMNI_CUSTOM_FP_ICON,
                 UserHandle.USER_CURRENT);
+
+        mIsRecognizingAnimEnabled = Settings.System.getInt(mContext.getContentResolver(),
+                Settings.System.FOD_RECOGNIZING_ANIMATION, 0) != 0;
 
         if (!TextUtils.isEmpty(customIconURI)) {
             try {
