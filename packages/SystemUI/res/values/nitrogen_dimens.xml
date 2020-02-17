@@ -18,6 +18,7 @@
     <dimen name="horizontal_max_swift">3.0dp</dimen>
     <dimen name="vertical_max_swift">1.0dp</dimen>
 
-    <dimen name="status_bar_battery_icon_circle_width">14.5dp</dimen>
+    <dimen name="status_bar_battery_icon_circle_width">12.5dp</dimen>
+    <dimen name="status_bar_battery_icon_circle_height">12.5dp</dimen>
 
 </resources>
