@@ -66,6 +66,4 @@
     <!-- Device uses Fingerprint On Display -->
     <bool name="config_usesFOD">false</bool>
 
-    <!-- -1 means use same as config_screenBrightnessDoze -->
-    <integer name="config_screenBrightnessPulse">-1</integer>
 </resources>
