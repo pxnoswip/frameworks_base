@@ -5414,28 +5414,6 @@ public final class Settings {
         /** @hide */
         private static final Validator BACK_GESTURE_HAPTIC_VALIDATOR = BOOLEAN_VALIDATOR;
 
-        /**
-         * User definable value of pulse notification screen brightness
-         *
-         * @hide
-         */
-        public static final String OMNI_PULSE_BRIGHTNESS = "pulse_brightness";
-
-        /** @hide */
-        private static final Validator OMNI_PULSE_BRIGHTNESS_VALIDATOR =
-                ANY_INTEGER_VALIDATOR;
-
-        /**
-         * User definable value of aod screen brightness
-         *
-         * @hide
-         */
-        public static final String OMNI_DOZE_BRIGHTNESS = "doze_brightness";
-
-        /** @hide */
-        private static final Validator OMNI_DOZE_BRIGHTNESS_VALIDATOR =
-                ANY_INTEGER_VALIDATOR;
-
        /**
          * Position of date
          * 0 - Left of clock
@@ -5578,8 +5556,6 @@ public final class Settings {
             NAV_BAR_GESTURAL_HIDE_NAV,
             SHOW_LOCKSCREEN_MEDIA_ART,
             OMNI_LONG_PRESS_POWER_TORCH,
-            OMNI_PULSE_BRIGHTNESS,
-            OMNI_DOZE_BRIGHTNESS,
             STATUS_BAR_CLOCK,
             STATUSBAR_CLOCK_STYLE,
             STATUS_BAR_CLOCK_SECONDS,
@@ -5784,8 +5760,6 @@ public final class Settings {
             PRIVATE_SETTINGS.add(NAV_BAR_GESTURAL_HIDE_NAV);
             PRIVATE_SETTINGS.add(SHOW_LOCKSCREEN_MEDIA_ART);
             PRIVATE_SETTINGS.add(OMNI_LONG_PRESS_POWER_TORCH);
-            PRIVATE_SETTINGS.add(OMNI_PULSE_BRIGHTNESS);
-            PRIVATE_SETTINGS.add(OMNI_DOZE_BRIGHTNESS);
             PRIVATE_SETTINGS.add(STATUS_BAR_CLOCK);
             PRIVATE_SETTINGS.add(STATUSBAR_CLOCK_STYLE);
             PRIVATE_SETTINGS.add(STATUS_BAR_CLOCK_SECONDS);
@@ -5972,8 +5946,6 @@ public final class Settings {
             VALIDATORS.put(NAV_BAR_GESTURAL_HIDE_NAV, NAV_BAR_GESTURAL_HIDE_NAV_VALIDATOR);
             VALIDATORS.put(SHOW_LOCKSCREEN_MEDIA_ART, SHOW_LOCKSCREEN_MEDIA_ART_VALIDATOR);
             VALIDATORS.put(OMNI_LONG_PRESS_POWER_TORCH, OMNI_LONG_PRESS_POWER_TORCH_VALIDATOR);
-            VALIDATORS.put(OMNI_PULSE_BRIGHTNESS, OMNI_PULSE_BRIGHTNESS_VALIDATOR);
-            VALIDATORS.put(OMNI_DOZE_BRIGHTNESS, OMNI_DOZE_BRIGHTNESS_VALIDATOR);
             VALIDATORS.put(STATUS_BAR_CLOCK, STATUS_BAR_CLOCK_VALIDATOR);
             VALIDATORS.put(STATUSBAR_CLOCK_STYLE, STATUSBAR_CLOCK_STYLE_VALIDATOR);
             VALIDATORS.put(STATUS_BAR_CLOCK_SECONDS, STATUS_BAR_CLOCK_SECONDS_VALIDATOR);
